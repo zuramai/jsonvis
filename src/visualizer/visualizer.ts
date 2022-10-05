@@ -7,6 +7,12 @@ class Visualizer {
     cards: SVGElement
     data: any
     rootNode: SVGNode|null = null
+    viewbox = {
+        x: 0,
+        y: 0,
+        w: 0,
+        h: 0
+    }
 
     constructor(svg: SVGElement, data: any) {
         this.svg = svg
@@ -41,6 +47,10 @@ class Visualizer {
 
     watchSize() {
         window.addEventListener('resize', resizeSVG)
+        
+        // set viewbox
+        resizeSVG()
+        this.svg.setAttribute('viewBox', `${this.viewbox.x} ${this.viewbox.y} ${this.svg.getAttribute('width')} ${this.svg.getAttribute('height')}`)
     }
 }
 
