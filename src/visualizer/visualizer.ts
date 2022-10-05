@@ -31,11 +31,12 @@ class Visualizer {
     init() {
         // Create the root node
         if(Array.isArray(this.data)) {
-            this.rootNode = new SVGNode("empty", { x: 200, y:500 }, "")
+            this.rootNode = new SVGNode("empty", { x: 200, y:200 }, "")
             return
         }
 
-        this.rootNode = new SVGNode("object", { x: 200, y: 500 }, this.data)
+        this.rootNode = new SVGNode("object", { x: 200, y: 200 }, this.data)
+
     }
 
    
@@ -51,15 +52,37 @@ class Visualizer {
         
         // set viewbox
         resizeSVG()
+
+        // set default viewbox
+        this.viewbox.w = ~~this.svg.getAttribute('width')!
+        this.viewbox.h = ~~this.svg.getAttribute('height')!
         this.updateViewbox()
     }
     
     updateViewbox() {
-        this.svg.setAttribute('viewBox', `${this.viewbox.x} ${this.viewbox.y} ${this.svg.getAttribute('width')} ${this.svg.getAttribute('height')}`)
+        this.svg.setAttribute('viewBox', `${this.viewbox.x} ${this.viewbox.y} ${this.viewbox.w} ${this.viewbox.h}`)
     }
 
     events() {
         this.draggingEvent()
+        this.zoomEvent()
+    }
+
+    private zoomEvent() {
+        let lastKnownScrollPosition = 0;
+        let ticking = false;
+
+        window.addEventListener('wheel', e => {
+            let minimumDimension = 300
+                e.preventDefault()
+                // Do zooming
+                this.viewbox.w = this.viewbox.w + e.deltaY < minimumDimension ? minimumDimension : this.viewbox.w + e.deltaY 
+                this.viewbox.h = this.viewbox.h + e.deltaY < minimumDimension ? minimumDimension : this.viewbox.h + e.deltaY 
+
+                this.updateViewbox()
+
+                console.log('scrolling', e.deltaY)
+        })
     }
     
     private draggingEvent() {
@@ -98,9 +121,6 @@ class Visualizer {
 
     }
 
-    drag() {
-
-    }
 }
 
 export const createVisualizer = (svg: SVGElement, data: any) => {

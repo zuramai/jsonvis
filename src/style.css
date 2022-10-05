@@ -12,6 +12,7 @@
 body {
   background-color: var(--dark-1);
   height: 100vh;
+  overflow: hidden;
 }
 #app {
   height: 100%;
