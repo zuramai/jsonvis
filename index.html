@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + TS</title>
+  </head>
+  <body>
+    <div id="app">
+      <div id="editor">
+        <div class="editor-sidebar">
+          <div class="editor-header">
+            <h3>JSONVis</h3>
+          </div>
+          <div class="textarea-editor">
+            <textarea name="editor" id="">
+{
+  "name": "Ahmad Saugi",
+  "occupation": "Nothing",
+  "children": [
+    {
+      "name": "Anak Satu",
+      "occupation": "Student"
+    },
+    {
+      "name": "Anak Dua",
+      "occupation": "Student"
+    },
+    {
+      "name": "Anak Tiga",
+      "occupation": "Student"
+    }
+  ]
+}
+            </textarea>
+          </div>
+        </div>
+        <div class="visualization">
+          <svg xmlns="http://w3.org/2000/svg" id="visualizer">
+            <defs>
+            </defs>
+            <g id="cards">
+              <g id="card">
+                <rect x="100" y="500" width="300" height="50" fill="rgba(100,100,100,.9)" rx="3" ></rect>
+                <foreignObject x="105" y="500" width="300" height="50" class="card-content">
+                  <span>"name": "Ahmad Saugi"</span>
+                  <span>"occupation": "Nothing"</span>
+                </foreignObject>
+              </g>
+              <g id="card">
+                <rect x="500" y="300" width="300" height="50" fill="rgba(100,100,100,.9)" rx="3" ></rect>
+              </g>
+              <g id="card">
+                <rect x="500" y="500" width="300" height="50" fill="rgba(100,100,100,.9)" rx="3" ></rect>
+              </g>
+              <g id="card">
+                <rect x="500" y="700" width="300" height="50" fill="rgba(100,100,100,.9)" rx="3" ></rect>
+              </g>
+            </g>
+            <g class="lines">
+              <path d="M400,525 Q450,525 450,400 Q450,325 500,325" stroke="#ccc" stroke-opacity=".3" stroke-width="3" fill="none"></path>
+              <path d="M400,525 L500,525" stroke="#ccc" stroke-opacity=".3" stroke-width="3" fill="none"></path>
+              <path d="M400,525 Q450,525 450,675 Q450,725 500,725" stroke="#ccc" stroke-opacity=".3" stroke-width="3" fill="none"></path>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
+<!-- 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 -->
