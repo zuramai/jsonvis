@@ -6,21 +6,37 @@ export class SVGNode {
     location: Position
     value: Record<string, string> | string | number
     children: SVGNode[] = []
+    el: SVGElement
+
+    // Default size
+    size = {
+        width: 300,
+        height: 100
+    }
 
     constructor(type: NodeType, location: Position, value: Record<string, string> | string | number) {
         this.type = type
         this.location = location
         this.value = value
+        this.el = this.getCard()
     }
-    getSize() {
-        return {
-            width: 300,
-            height: 150,
+    setSize() {
+        this.size = {
+            width: 300, 
+            height: this.el.querySelector('.object-text-wrapper')!.clientHeight ?? 100
         }
+        console.log(this.el.querySelector('.object-text-wrapper'))
+    }
+    updateSize() {
+        this.setSize()
+        this.el.querySelector('rect')?.setAttribute('width', this.size.width.toString())
+        this.el.querySelector('rect')?.setAttribute('height', this.size.height.toString())
+        this.el.querySelector('foreignObject')?.setAttribute('width', this.size.width.toString())
+        this.el.querySelector('foreignObject')?.setAttribute('height', this.size.height.toString())
     }
     getCard(): SVGElement {
         let g = createElementNS('g', {class: 'card'}, {}, (gEl) => {
-            let rectSize = this.getSize()
+            let rectSize = this.size
             gEl.append(
                 createElementNS("rect", { 
                     x: this.location.x, 

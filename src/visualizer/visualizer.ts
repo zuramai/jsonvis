@@ -44,7 +44,8 @@ class Visualizer {
         if(node == null) {
             node = this.rootNode!
         } 
-        this.cards.append(node.getCard())
+        this.cards.append(node.el)
+        node.updateSize()
     }
 
     watchSize() {
