@@ -43,6 +43,8 @@ body {
   font-size: .8rem;
   background-color: var(--dark-2);
   color: white;
+  border: none;
+  padding: 1rem .3rem;
 }
 #visualizer {
   width: 100%;
