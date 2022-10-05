@@ -32,6 +32,8 @@ body {
 .editor-header {
   color: #fff;
   text-align: center;
+  display: flex;
+  justify-content: space-between;
   padding: 1rem;
   border-bottom: 1px solid rgba(255,255,255,.5);
 }
