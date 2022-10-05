@@ -1,17 +1,21 @@
 import { resizeSVG } from "../window"
 import { SVGNode } from "./node"
+import { createElement } from "./utils"
 
 class Visualizer {
-    svg: SVGElement
+    svg: SVGElement 
+    cards: SVGElement
     data: any
     rootNode: SVGNode|null = null
 
     constructor(svg: SVGElement, data: any) {
         this.svg = svg
+        this.cards = svg.querySelector('#cards')!
         this.data = data 
 
         this.watchSize()
         this.init()
+        this.draw()
     }
 
     /**
@@ -20,23 +24,19 @@ class Visualizer {
     init() {
         // Create the root node
         if(Array.isArray(this.data)) {
-            this.rootNode = new SVGNode("empty", { x: 200, y:500 }, "")
+            this.rootNode = new SVGNode("empty", { x: 200, y:500 }, null)
             return
         }
 
-        this.rootNode = new SVGNode("object", { x: 200, y: 500 }, this.objectToString(this.data as Record<string, string>))
+        this.rootNode = new SVGNode("object", { x: 200, y: 500 }, this.data)
     }
 
-    objectToString(obj: Record<string, any>): string {
-
-        for(const key in obj) {
-            let val = obj[key]
-            if(typeof val == 'object') return 
-        }
-    }
-
-    draw() {
-        
+   
+    draw(node: SVGNode|null = null) {
+        if(node == null) {
+            node = this.rootNode!
+        } 
+        this.cards.append(node.getCard())
     }
 
     watchSize() {
