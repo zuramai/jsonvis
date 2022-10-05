@@ -4,10 +4,10 @@ import { createElement, createElementNS } from "./utils"
 export class SVGNode {
     type: NodeType
     location: Position
-    value: Record<string, string>
+    value: Record<string, string> | string | number
     children: SVGNode[] = []
 
-    constructor(type: NodeType, location: Position, value: Record<string, string>) {
+    constructor(type: NodeType, location: Position, value: Record<string, string> | string | number) {
         this.type = type
         this.location = location
         this.value = value
@@ -27,7 +27,9 @@ export class SVGNode {
                     y: this.location.y, 
                     width: rectSize.width, 
                     height: rectSize.height, 
-                    fill: "rgba(100,100,100,.9)", 
+                    fill: "rgba(50,50,50)",
+                    rx: 10,
+                    "fill-opacity": .8
                 }),
                 createElementNS("foreignObject", {
                     x: this.location.x, 
@@ -43,21 +45,23 @@ export class SVGNode {
 
         return g
     }
-    highlight(obj: Record<string, any>): HTMLElement {
-        let wrapper = document.createElement('ul')
-        for(const key in obj) {
-            let val = obj[key]
-            if(typeof val == 'object') continue 
-            else {
-                // Create key-value span
-                let newEl = createElement('li', { class: "object-kv" }, {}, (el) => {
-                    let keyEl = createElement('span', { class: "object-key" })
-                    keyEl.innerText = key
-                    let valueEl = createElement('span', { class: "object-value" })
-                    valueEl.innerText = val
-                    el.append(keyEl, valueEl)
-                })
-                wrapper.append(newEl)
+    highlight(obj: Record<string, any> | string | number): HTMLElement {
+        let wrapper = createElement('ul', { class: 'object-text-wrapper' })
+        if(typeof obj == 'object') {
+            for(const key in obj) {
+                let val = obj[key]
+                if(typeof val == 'object') continue 
+                else {
+                    // Create key-value span
+                    let newEl = createElement('li', { class: "object-kv" }, {}, (el) => {
+                        let keyEl = createElement('span', { class: "object-key" })
+                        keyEl.innerText = key + ': '
+                        let valueEl = createElement('span', { class: "object-value" })
+                        valueEl.innerText = val
+                        el.append(keyEl, valueEl)
+                    })
+                    wrapper.append(newEl)
+                }
             }
         }
 

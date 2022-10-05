@@ -24,7 +24,7 @@ class Visualizer {
     init() {
         // Create the root node
         if(Array.isArray(this.data)) {
-            this.rootNode = new SVGNode("empty", { x: 200, y:500 }, null)
+            this.rootNode = new SVGNode("empty", { x: 200, y:500 }, "")
             return
         }
 

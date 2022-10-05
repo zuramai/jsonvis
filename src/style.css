@@ -52,3 +52,17 @@ body {
 #visualizer .card-content {
   color: white
 }
+.object-text-wrapper {
+  padding: 1rem;
+  list-style: none;
+}
+.object-text-wrapper {
+  padding: 1rem;
+  list-style: none;
+}
+.object-text-wrapper .object-key {
+  color: rgb(133, 133, 255)
+}
+.object-text-wrapper .object-value {
+  color: rgb(255, 255, 255)
+}
