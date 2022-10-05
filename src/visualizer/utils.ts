@@ -1,4 +1,4 @@
-export const createElementNS = (name: string, attrs?: Record<string, string|number>, styles?: Record<string, string>, cb?: (el: SVGGElement) => void) => {
+export const createElementNS = (name: string, attrs?: Record<string, string|number>, styles?: Record<string, string>, cb?: (el: SVGElement) => void) => {
     let el = document.createElementNS("http://www.w3.org/2000/svg", name)
     
     // Set the attributes

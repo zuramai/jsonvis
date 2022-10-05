@@ -1,4 +1,4 @@
-import { resizeSVG } from "../window"
+import { getMousePosition, resizeSVG } from "../window"
 import { SVGNode } from "./node"
 import { createElement } from "./utils"
 
@@ -22,6 +22,7 @@ class Visualizer {
         this.watchSize()
         this.init()
         this.draw()
+        this.events()
     }
 
     /**
@@ -50,7 +51,55 @@ class Visualizer {
         
         // set viewbox
         resizeSVG()
+        this.updateViewbox()
+    }
+    
+    updateViewbox() {
         this.svg.setAttribute('viewBox', `${this.viewbox.x} ${this.viewbox.y} ${this.svg.getAttribute('width')} ${this.svg.getAttribute('height')}`)
+    }
+
+    events() {
+        this.draggingEvent()
+    }
+    
+    private draggingEvent() {
+        let isDragging = false 
+        let dragFromOffset = {
+            x: this.viewbox.x,
+            y: this.viewbox.y,
+        }
+        let mouseDownFrom = {
+            x: 0,
+            y: 0
+        }
+        
+        this.svg.addEventListener('mousedown', (e) => {
+            let mousePos = getMousePosition(this.svg, e)
+            mouseDownFrom = mousePos
+            isDragging = true
+            dragFromOffset = {
+                x: this.viewbox.x,
+                y: this.viewbox.y,
+            }
+        })
+        
+        this.svg.addEventListener('mouseup', (e) => {
+            isDragging = false
+        })
+        
+        this.svg.addEventListener('mousemove', (e) => {
+            if(!isDragging) return
+            let mousePos = getMousePosition(this.svg, e)
+            this.viewbox.x = dragFromOffset.x - (mousePos.x - mouseDownFrom.x)
+            this.viewbox.y = dragFromOffset.y - (mousePos.y - mouseDownFrom.y)
+            
+            this.updateViewbox()
+        })
+
+    }
+
+    drag() {
+
     }
 }
 
