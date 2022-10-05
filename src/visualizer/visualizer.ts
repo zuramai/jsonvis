@@ -59,6 +59,13 @@ class Visualizer {
         this.viewbox.h = ~~this.svg.getAttribute('height')!
         this.updateViewbox()
     }
+
+    updateData(data: any) {
+        this.data = data 
+        this.cards.innerHTML = ""
+        this.init()
+        this.draw()
+    }
     
     updateViewbox() {
         this.svg.setAttribute('viewBox', `${this.viewbox.x} ${this.viewbox.y} ${this.viewbox.w} ${this.viewbox.h}`)

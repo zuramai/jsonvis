@@ -25,7 +25,6 @@ export class SVGNode {
             width: 300, 
             height: this.el.querySelector('.object-text-wrapper')!.clientHeight ?? 100
         }
-        console.log(this.el.querySelector('.object-text-wrapper'))
     }
     updateSize() {
         this.setSize()
