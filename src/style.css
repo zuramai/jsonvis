@@ -71,3 +71,15 @@ body {
 .object-text-wrapper .object-value {
   color: rgb(255, 255, 255)
 }
+.card-extension {
+  color: white
+}
+.btn-toggle-view {
+  width: 100%;
+  height: 100%;
+}
+.btn-transparent {
+  background-color: transparent;
+  color: white;
+  border: none;
+}

@@ -21,10 +21,14 @@ export class SVGNode {
         this.el = this.getCard()
     }
     setSize() {
+        let width = 300 
+        if(this.type == 'extension') width = 200
+
         this.size = {
-            width: 300, 
+            width, 
             height: this.el.querySelector('.object-text-wrapper')!.clientHeight ?? 100
         }
+        console.log(this.size)
     }
     updateSize() {
         this.setSize()
@@ -34,7 +38,7 @@ export class SVGNode {
         this.el.querySelector('foreignObject')?.setAttribute('height', this.size.height.toString())
     }
     getCard(): SVGElement {
-        let g = createElementNS('g', {class: 'card'}, {}, (gEl) => {
+        let g = createElementNS('g', {class: `card card-${this.type}`}, {}, (gEl) => {
             let rectSize = this.size
             gEl.append(
                 createElementNS("rect", { 
@@ -56,28 +60,60 @@ export class SVGNode {
                     foreignElement.append(this.highlight(this.value))
                 })
             )
+
+            if(this.type == 'extension') {
+                // Add toggle view button
+                gEl.append(
+                    createElementNS("foreignObject", {
+                        x: this.location.x + 200 - 30, 
+                        y: this.location.y, 
+                        width: 30, 
+                        height: 50, 
+                    }, {}, 
+                    (foreignElement) => {
+                        foreignElement.append(
+                            createElement("button", { class: "btn btn-transparent btn-toggle-view" }, {}, (btn) => {
+                                btn.innerHTML = "X"
+                            })
+                        )
+                    })
+                )
+            }
+
         })
 
         return g
     }
-    highlight(obj: Record<string, any> | string | number): HTMLElement {
+    highlight(data: Record<string, any> | string | number): HTMLElement {
         let wrapper = createElement('ul', { class: 'object-text-wrapper' })
-        if(typeof obj == 'object') {
-            for(const key in obj) {
-                let val = obj[key]
-                if(typeof val == 'object') continue 
-                else {
-                    // Create key-value span
-                    let newEl = createElement('li', { class: "object-kv" }, {}, (el) => {
-                        let keyEl = createElement('span', { class: "object-key" })
-                        keyEl.innerText = key + ': '
-                        let valueEl = createElement('span', { class: "object-value" })
-                        valueEl.innerText = val
-                        el.append(keyEl, valueEl)
-                    })
-                    wrapper.append(newEl)
+        console.log(typeof data)
+        switch (typeof data) {
+            case 'object':
+                // If the data is object, get the key-value pair and push it to string
+                for(const key in data) {
+                    let val = data[key]
+                    if(typeof val == 'object') continue 
+                    else {
+                        // Create key-value span
+                        let newEl = createElement('li', { class: "object-kv" }, {}, (el) => {
+                            let keyEl = createElement('span', { class: "object-key" })
+                            keyEl.innerText = key + ': '
+                            let valueEl = createElement('span', { class: "object-value" })
+                            valueEl.innerText = val
+                            el.append(keyEl, valueEl)
+                        })
+                        wrapper.append(newEl)
+                    }
                 }
-            }
+                break;
+            case 'string':
+                let newEl = createElement('li', { class: "string" }, {}, (li) => {
+                    li.innerHTML = data
+                })
+                wrapper.append(newEl)
+                break;
+            default:
+                break;
         }
 
         return wrapper

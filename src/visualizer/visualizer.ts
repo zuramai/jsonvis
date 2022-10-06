@@ -34,8 +34,52 @@ class Visualizer {
             this.rootNode = new SVGNode("empty", { x: 200, y:200 }, "")
             return
         }
-
+        
         this.rootNode = new SVGNode("object", { x: 200, y: 200 }, this.data)
+
+        let distanceXFromParent = 100
+
+        const loop = (parent: SVGNode, children?: any[]) => {
+            parent.value
+
+            if(typeof parent.value == 'object') {
+                for(const key in parent.value) {
+                    if(!Array.isArray(parent.value[key]) && typeof parent.value[key] == 'object') {
+                        // The value is object.
+                        // Create only one child that connected to the parent
+                        let newNode = new SVGNode("object", { x: parent.location.x + parent.size.width + distanceXFromParent, y: parent.location.y }, parent.value[key])
+                        parent.addChildren(newNode)
+                        this.cards.append(newNode.el)
+                    } else if(Array.isArray(parent.value[key])) {
+                        // The value is array.
+                        // Create the extension node with its children in it
+                        let extensionNode = new SVGNode("extension", { x: parent.location.x + parent.size.width + distanceXFromParent, y: parent.location.y }, key)
+                        parent.addChildren(extensionNode)
+                        this.cards.append(extensionNode.el)
+                        extensionNode.updateSize()
+
+                        loop(extensionNode, parent.value[key] as any)
+                    }
+                }
+            }
+
+            // Create the `children` if any
+            children?.forEach(child => {
+                let newNode = new SVGNode("object", { x: parent.location.x + parent.size.width + distanceXFromParent, y: parent.location.y }, child)
+                parent.addChildren(newNode)
+                this.cards.append(newNode.el)
+                loop(newNode)
+            }) 
+
+            this.recalculatePosition()
+        }
+
+
+        loop(this.rootNode)
+        this.recalculatePosition()
+    }
+
+    recalculatePosition() {
 
     }
 
