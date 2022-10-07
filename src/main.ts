@@ -1,7 +1,6 @@
 import { initWebsocket } from './socket'
 import './style.css'
 import { createVisualizer } from './visualizer/visualizer'
-import { resizeSVG } from './window'
 
 
 let data = {}

@@ -80,7 +80,21 @@ class Visualizer {
     }
 
     recalculatePosition() {
+        const gapBetweenNode = 50
+        const loop = (parent: SVGNode) => {
+            let childrenAmount = parent.children.length
+            let childTotalHeight = parent.children.reduce((acc, curr) => acc + curr.size.height, 0) 
+            let childrenGroupHeight = childTotalHeight + (gapBetweenNode * (childrenAmount - 1))
+            let startY = parent.location.y - childrenGroupHeight / 2
+            let endY = parent.location.y + childrenGroupHeight / 2
 
+            parent.children.forEach((child, index) => {
+                let newY = startY + childrenGroupHeight * ((index+1) / childrenAmount)
+                child.updateY(newY)
+                loop(child)
+            })
+        }
+        loop(this.rootNode!)
     }
 
    

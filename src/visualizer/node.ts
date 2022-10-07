@@ -30,6 +30,11 @@ export class SVGNode {
         }
         console.log(this.size)
     }
+    updateY(y: number) {
+        this.location.y = y
+        this.el.querySelector('rect')?.setAttribute('y', y.toString())
+        this.el.querySelector('foreignObject')?.setAttribute('y', y.toString())
+    }
     updateSize() {
         this.setSize()
         this.el.querySelector('rect')?.setAttribute('width', this.size.width.toString())
