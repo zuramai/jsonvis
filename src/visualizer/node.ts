@@ -33,7 +33,7 @@ export class SVGNode {
     updateY(y: number) {
         this.location.y = y
         this.el.querySelector('rect')?.setAttribute('y', y.toString())
-        this.el.querySelector('foreignObject')?.setAttribute('y', y.toString())
+        this.el.querySelectorAll('foreignObject').forEach(f => f.setAttribute('y', y.toString()))
     }
     updateSize() {
         this.setSize()

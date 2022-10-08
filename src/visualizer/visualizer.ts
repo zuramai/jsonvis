@@ -1,6 +1,6 @@
 import { getMousePosition, resizeSVG } from "../window"
 import { SVGNode } from "./node"
-import { createElement } from "./utils"
+import { createElement, createElementNS } from "./utils"
 
 class Visualizer {
     svg: SVGElement 
@@ -71,9 +71,7 @@ class Visualizer {
                 loop(newNode)
             }) 
 
-            this.recalculatePosition()
         }
-
 
         loop(this.rootNode)
         this.recalculatePosition()
@@ -95,6 +93,7 @@ class Visualizer {
             })
         }
         loop(this.rootNode!)
+        this.drawLine()
     }
 
    
@@ -104,6 +103,44 @@ class Visualizer {
         } 
         this.cards.append(node.el)
         node.updateSize()
+    }
+
+    drawLine() {
+        const lineWrapper = document.getElementById('lines')!
+        lineWrapper.innerHTML = ""
+
+        const loop = (parent: SVGNode) => {
+            parent.children.forEach((child, index) => {
+                let parentRight = parent.location.x + parent.size.width
+                let parentMiddleY = parent.location.y + (parent.size.height / 2)
+                let childMiddleY = child.location.y + (child.size.height / 2)
+                let gapX = child.location.x - parentRight
+                let gapY = parentMiddleY - childMiddleY
+
+                let d
+                
+                if (parent.children.length === 1) d = `M${parentRight},${parentMiddleY} L${child.location.x},${childMiddleY}`
+                else d = `
+                        M${parentRight},${parentMiddleY}
+                        Q${parentRight + gapX / 2},${parentMiddleY} ${parentRight + gapX / 2},${parentMiddleY + (gapY * 1 / 3) * -1}
+                        L${parentRight + gapX / 2},${parentMiddleY + (gapY * 2 / 3) * -1}
+                        Q${child.location.x - gapX / 2},${childMiddleY} ${child.location.x},${childMiddleY}
+                    `
+                
+                let newLine = createElementNS("path", {
+                    d,
+                    stroke: '#ccc',
+                    "stroke-opacity": '.3',
+                    'stroke-width': 3,
+                    fill: 'none'
+                })
+                lineWrapper.append(newLine)
+                
+                loop(child)
+            })
+        }
+
+        loop(this.rootNode!)
     }
 
     watchSize() {
