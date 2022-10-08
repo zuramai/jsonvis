@@ -7,6 +7,7 @@ export class SVGNode {
     value: Record<string, string> | string | number
     children: SVGNode[] = []
     el: SVGElement
+    totalHeight = 0
 
     // Default size
     size = {

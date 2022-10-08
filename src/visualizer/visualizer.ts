@@ -49,14 +49,11 @@ class Visualizer {
                         // Create only one child that connected to the parent
                         let newNode = new SVGNode("object", { x: parent.location.x + parent.size.width + distanceXFromParent, y: parent.location.y }, parent.value[key])
                         parent.addChildren(newNode)
-                        this.cards.append(newNode.el)
                     } else if(Array.isArray(parent.value[key])) {
                         // The value is array.
                         // Create the extension node with its children in it
                         let extensionNode = new SVGNode("extension", { x: parent.location.x + parent.size.width + distanceXFromParent, y: parent.location.y }, key)
                         parent.addChildren(extensionNode)
-                        this.cards.append(extensionNode.el)
-                        extensionNode.updateSize()
 
                         loop(extensionNode, parent.value[key] as any)
                     }
@@ -74,7 +71,7 @@ class Visualizer {
         }
 
         loop(this.rootNode)
-        this.recalculatePosition()
+        this.draw()
     }
 
     recalculatePosition() {
@@ -91,18 +88,31 @@ class Visualizer {
                 child.updateY(newY)
                 loop(child)
             })
+
         }
         loop(this.rootNode!)
         this.drawLine()
     }
 
    
-    draw(node: SVGNode|null = null) {
-        if(node == null) {
-            node = this.rootNode!
-        } 
-        this.cards.append(node.el)
-        node.updateSize()
+    draw() {
+        const nodeWrapper = document.getElementById('cards')!
+        nodeWrapper.innerHTML = ""
+
+        const loop = (node: SVGNode | null = null) => {
+            if(node == null) {
+                node = this.rootNode!
+            }
+            this.cards.append(node.el)
+            node.updateSize()
+            node.children.forEach(child => {
+                loop(child)
+            })
+            console.log('draw')
+        }
+        loop(this.rootNode)
+
+        this.recalculatePosition()
     }
 
     drawLine() {
@@ -123,7 +133,6 @@ class Visualizer {
                 else d = `
                         M${parentRight},${parentMiddleY}
                         Q${parentRight + gapX / 2},${parentMiddleY} ${parentRight + gapX / 2},${parentMiddleY + (gapY * 1 / 3) * -1}
-                        L${parentRight + gapX / 2},${parentMiddleY + (gapY * 2 / 3) * -1}
                         Q${child.location.x - gapX / 2},${childMiddleY} ${child.location.x},${childMiddleY}
                     `
                 
@@ -157,9 +166,9 @@ class Visualizer {
 
     updateData(data: any) {
         this.data = data 
-        this.cards.innerHTML = ""
         this.init()
         this.draw()
+        this.recalculatePosition()
     }
     
     updateViewbox() {
