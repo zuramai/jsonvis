@@ -1,7 +1,7 @@
 {
   "name": "jsonvis",
   "version": "0.1.0",
-  "description": "",
+  "description": "Simple SVG JSON Visualizer",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
