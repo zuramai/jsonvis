@@ -10,7 +10,7 @@
   "files": ["dist"],
   "scripts": {
     "dev": "nr tsup --watch",
-    "tsup": "tsup src/index.ts --format esm,cjs --dts --no-splitting --clean",
+    "tsup": "tsup src/index.ts --format esm,cjs,iife --dts --no-splitting --clean",
     "build": "nr tsup",
     "prepublishOnly": "nr build"
   },
@@ -27,5 +27,5 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "MIT"
 }
