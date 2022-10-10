@@ -1,3 +1,4 @@
+import { isObject, isPrimitive } from "../utils"
 import { getMousePosition, resizeSVG } from "../window"
 import { SVGNode } from "./node"
 import { createElement, createElementNS } from "./utils"
@@ -44,29 +45,30 @@ class Visualizer {
 
             if(typeof parent.value == 'object') {
                 for(const key in parent.value) {
-                    if(!Array.isArray(parent.value[key]) && typeof parent.value[key] == 'object') {
-                        // The value is object.
-                        // Create only one child that connected to the parent
-                        let newNode = new SVGNode("object", { x: parent.location.x + parent.size.width + distanceXFromParent, y: parent.location.y }, parent.value[key])
-                        parent.addChildren(newNode)
-                    } else if(Array.isArray(parent.value[key])) {
-                        // The value is array.
-                        // Create the extension node with its children in it
-                        let extensionNode = new SVGNode("extension", { x: parent.location.x + parent.size.width + distanceXFromParent, y: parent.location.y }, key)
-                        parent.addChildren(extensionNode)
+                    if(isPrimitive(parent.value[key])) continue
+                    
+                    // Create the extension node with its children in it
+                    let extensionNode = new SVGNode("extension", { x: parent.location.x + parent.size.width + distanceXFromParent, y: parent.location.y }, key)
+                    parent.addChildren(extensionNode)
 
-                        loop(extensionNode, parent.value[key] as any)
-                    }
+                    loop(extensionNode, parent.value[key] as any)
                 }
             }
 
             // Create the `children` if any
-            children?.forEach(child => {
-                let newNode = new SVGNode("object", { x: parent.location.x + parent.size.width + distanceXFromParent, y: parent.location.y }, child)
+            if(Array.isArray(children)) {
+                children?.forEach(child => {
+                    let newNode = new SVGNode("object", { x: parent.location.x + parent.size.width + distanceXFromParent, y: parent.location.y }, child)
+                    parent.addChildren(newNode)
+                    this.cards.append(newNode.el)
+                    loop(newNode)
+                }) 
+            } else if(isObject(children)){
+                let newNode = new SVGNode("object", { x: parent.location.x + parent.size.width + distanceXFromParent, y: parent.location.y }, children)
                 parent.addChildren(newNode)
                 this.cards.append(newNode.el)
                 loop(newNode)
-            }) 
+            }
 
         }
 
@@ -75,23 +77,33 @@ class Visualizer {
     }
 
     recalculatePosition() {
-        const gapBetweenNode = 50
         const loop = (parent: SVGNode) => {
             let childrenAmount = parent.children.length
             let childTotalHeight = parent.children.reduce((acc, curr) => acc + curr.size.height, 0) 
-            let childrenGroupHeight = childTotalHeight + (gapBetweenNode * (childrenAmount - 1))
+            let childrenGroupHeight = childTotalHeight + (parent.gapBetweenChildren * (childrenAmount - 1))
             let startY = parent.location.y + parent.size.height / 2 - childrenGroupHeight / 2
-            let endY = parent.location.y + childrenGroupHeight / 2
-
+            
+            parent.totalHeight = childrenGroupHeight
+            
+            let entireChildrenTotalHeight = 0
             parent.children.forEach((child, index) => {
                 let newY = startY + childrenGroupHeight * ((index) / childrenAmount)
                 child.updateY(newY)
                 loop(child)
+
+                entireChildrenTotalHeight += child.totalHeight || child.size.height
+
+                // newY = startY + entireChildrenTotalHeight 
+                // child.updateY(newY)
             })
 
+            if(entireChildrenTotalHeight > parent.totalHeight) {
+                parent.totalHeight = entireChildrenTotalHeight
+            }
         }
         loop(this.rootNode!)
         this.drawLine()
+        console.log(this.rootNode)
     }
 
    

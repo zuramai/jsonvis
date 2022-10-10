@@ -8,6 +8,7 @@ export class SVGNode {
     children: SVGNode[] = []
     el: SVGElement
     totalHeight = 0
+    gapBetweenChildren = 50
 
     // Default size
     size = {
@@ -92,7 +93,6 @@ export class SVGNode {
     }
     highlight(data: Record<string, any> | string | number): HTMLElement {
         let wrapper = createElement('ul', { class: 'object-text-wrapper' })
-        console.log(typeof data)
         switch (typeof data) {
             case 'object':
                 // If the data is object, get the key-value pair and push it to string
