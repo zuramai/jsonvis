@@ -80,11 +80,11 @@ class Visualizer {
             let childrenAmount = parent.children.length
             let childTotalHeight = parent.children.reduce((acc, curr) => acc + curr.size.height, 0) 
             let childrenGroupHeight = childTotalHeight + (gapBetweenNode * (childrenAmount - 1))
-            let startY = parent.location.y - childrenGroupHeight / 2
+            let startY = parent.location.y + parent.size.height / 2 - childrenGroupHeight / 2
             let endY = parent.location.y + childrenGroupHeight / 2
 
             parent.children.forEach((child, index) => {
-                let newY = startY + childrenGroupHeight * ((index+1) / childrenAmount)
+                let newY = startY + childrenGroupHeight * ((index) / childrenAmount)
                 child.updateY(newY)
                 loop(child)
             })
