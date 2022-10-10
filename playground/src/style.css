@@ -71,6 +71,9 @@ body {
 .object-text-wrapper .object-value {
   color: rgb(255, 255, 255)
 }
+.object-text-wrapper .string {
+  color: white
+}
 .card-extension {
   color: white
 }
