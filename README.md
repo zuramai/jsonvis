@@ -1,7 +1,8 @@
+![ss](https://user-images.githubusercontent.com/45036724/194799745-ddd35971-2c2f-4c60-9110-72ca67ff5b0b.png)
+
+
 <p align="center">
-
-    <a href="https://zuramai.github.io/jsonvis">Demo</a>
-
+<a href="https://zuramai.github.io/jsonvis">Demo</a>
 </p>
 
 ## Develop it locally
