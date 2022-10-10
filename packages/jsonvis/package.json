@@ -1,0 +1,31 @@
+{
+  "name": "jsonvis",
+  "version": "0.1.0",
+  "description": "",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "unpkg": "dist/index.global.js",
+  "jsdelivr": "dist/index.global.js",
+  "files": ["dist"],
+  "scripts": {
+    "dev": "nr tsup --watch",
+    "tsup": "tsup src/index.ts --format esm,cjs --dts --no-splitting --clean",
+    "build": "nr tsup",
+    "prepublishOnly": "nr build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zuramai/jsonvis.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zuramai/jsonvis/issues"
+  },
+  "devDependencies": {
+    "@antfu/ni": "^0.13.2",
+    "tsup": "^6.2.3"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

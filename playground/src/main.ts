@@ -1,6 +1,5 @@
-import { initWebsocket } from './socket'
 import './style.css'
-import { createVisualizer } from './visualizer/visualizer'
+import { createVisualizer } from 'jsonvis'
 
 
 let data = {}
@@ -21,4 +20,3 @@ renderButton?.addEventListener('click', () => {
   vis.updateData(getData())
 })
 
-window.addEventListener('DOMContentLoaded', initWebsocket)

@@ -1,7 +1,6 @@
-import { isObject, isPrimitive } from "../utils"
-import { getMousePosition, resizeSVG } from "../window"
+import { isPrimitive } from "./utils"
 import { SVGNode } from "./node"
-import { createElement, createElementNS } from "./utils"
+import { createElementNS, getMousePosition, resizeSVG } from "./utils"
 
 class Visualizer {
     svg: SVGElement 
@@ -137,7 +136,7 @@ class Visualizer {
         lineWrapper.innerHTML = ""
 
         const loop = (parent: SVGNode) => {
-            parent.children.forEach((child, index) => {
+            parent.children.forEach((child) => {
                 let parentRight = parent.location.x + parent.size.width
                 let parentMiddleY = parent.location.y + (parent.size.height / 2)
                 let childMiddleY = child.location.y + (child.size.height / 2)
@@ -198,9 +197,6 @@ class Visualizer {
     }
 
     private zoomEvent() {
-        let lastKnownScrollPosition = 0;
-        let ticking = false;
-
         window.addEventListener('wheel', e => {
             let minimumDimension = 300
                 e.preventDefault()
@@ -235,7 +231,7 @@ class Visualizer {
             }
         })
         
-        this.svg.addEventListener('mouseup', (e) => {
+        this.svg.addEventListener('mouseup', () => {
             isDragging = false
         })
         

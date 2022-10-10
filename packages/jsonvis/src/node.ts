@@ -1,4 +1,4 @@
-import { NodeType, Position } from "../types"
+import { NodeType, Position } from "./types"
 import { createElement, createElementNS } from "./utils"
 
 export class SVGNode {

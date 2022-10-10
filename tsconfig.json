@@ -16,5 +16,7 @@
     "noImplicitReturns": true,
     "skipLibCheck": true
   },
-  "include": ["src"]
+  "paths": {
+    "mypackage": ["./packages/jsonvis/src/index.ts"]
+  }
 }

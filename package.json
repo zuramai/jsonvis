@@ -1,15 +1,29 @@
 {
-  "name": "jsonvis",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "play:dev": "pnpm -C playground run dev -- --open",
+    "play:build": "pnpm -C playground run build",
+    "js:dev": "pnpm run --filter ./packages/* dev --watch",
+    "js:build": "pnpm run -r --filter ./packages/* build",
+    "dev": "nr play:dev",
+    "build": "nr js:build",
+    "release": "bumpp package.json packages/*/package.json --tag --commit --push && pnpm -r publish --access public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zuramai/jsonvis.git"
   },
   "devDependencies": {
-    "typescript": "^4.6.4",
-    "vite": "^3.1.0"
-  }
+    "@antfu/eslint-config": "^0.16.1",
+    "@antfu/ni": "^0.13.2",
+    "bumpp": "^8.2.1",
+    "eslint": "^8.25.0",
+    "nanoevents": "^6.0.2",
+    "pnpm": "^7.13.3",
+    "sass": "^1.55.0",
+    "tsup": "^6.2.3",
+    "typescript": "^4.8.4",
+    "vite": "^3.1.6"
+  },
+  "license": "MIT"
 }
