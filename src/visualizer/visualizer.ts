@@ -41,12 +41,10 @@ class Visualizer {
         let distanceXFromParent = 100
 
         const loop = (parent: SVGNode, children?: any[]) => {
-            parent.value
-
             if(typeof parent.value == 'object') {
                 for(const key in parent.value) {
                     if(isPrimitive(parent.value[key])) continue
-                    
+
                     // Create the extension node with its children in it
                     let extensionNode = new SVGNode("extension", { x: parent.location.x + parent.size.width + distanceXFromParent, y: parent.location.y }, key)
                     parent.addChildren(extensionNode)
@@ -63,7 +61,7 @@ class Visualizer {
                     this.cards.append(newNode.el)
                     loop(newNode)
                 }) 
-            } else if(isObject(children)){
+            } else if(children){
                 let newNode = new SVGNode("object", { x: parent.location.x + parent.size.width + distanceXFromParent, y: parent.location.y }, children)
                 parent.addChildren(newNode)
                 this.cards.append(newNode.el)
@@ -86,12 +84,17 @@ class Visualizer {
             parent.totalHeight = childrenGroupHeight
             
             let entireChildrenTotalHeight = 0
+            let largestChildrenTotalHeight = 0
             parent.children.forEach((child, index) => {
                 let newY = startY + childrenGroupHeight * ((index) / childrenAmount)
                 child.updateY(newY)
                 loop(child)
 
-                entireChildrenTotalHeight += child.totalHeight || child.size.height
+                let childTotalHeight = child.totalHeight || child.size.height
+
+                entireChildrenTotalHeight += childTotalHeight
+                largestChildrenTotalHeight = childTotalHeight > largestChildrenTotalHeight ?  childTotalHeight : largestChildrenTotalHeight
+                parent.gapBetweenChildren = largestChildrenTotalHeight + 50
 
                 // newY = startY + entireChildrenTotalHeight 
                 // child.updateY(newY)
@@ -102,6 +105,8 @@ class Visualizer {
             }
         }
         loop(this.rootNode!)
+        loop(this.rootNode!)
+
         this.drawLine()
         console.log(this.rootNode)
     }
