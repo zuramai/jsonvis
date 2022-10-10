@@ -1,13 +1,15 @@
 {
   "name": "jsonvis",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Simple SVG JSON Visualizer",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "unpkg": "dist/index.global.js",
   "jsdelivr": "dist/index.global.js",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "nr tsup --watch",
     "tsup": "tsup src/index.ts --format esm,cjs,iife --dts --no-splitting --clean",
