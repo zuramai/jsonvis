@@ -49,6 +49,9 @@ body {
   border: none;
   padding: 1rem .3rem;
 }
+.visualization {
+  flex-grow: 1;
+}
 #visualizer {
   width: 100%;
   height: 100%;
